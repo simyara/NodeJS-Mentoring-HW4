@@ -3,11 +3,14 @@
 let productServer = require('../models/productServer');
 
 module.exports = {
-    getAllProducts:  function* () {
-        this.body = {
-            status:'success',
-            data: productServer.getItemsList()
-        };
+    getAllProducts:  function () {
+        return {
+            status : 200,
+            body : {
+                status:'success',
+                data: productServer.getItemsList()
+            }
+        }
     }
 };
 

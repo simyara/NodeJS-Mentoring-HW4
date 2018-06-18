@@ -5,145 +5,83 @@ let _ = require('lodash');
 let validator = require('./validator');
 
 module.exports = {
-    getOneproduct: function*() {
-        let productData = yield productServer.findOne(this.params.id);
+    getOneProduct: function (id) {
+        let productData = productServer.findOne(id);
+        let response = {
+            status : 200
+        }
 
         if (!productData) {
-            this.status = 404;
-            this.body = {
+            response.status = 404;
+            response.body = {
                 status: 'fail',
                 data: {
                     error: 'product ot found'
                 }
             };
-            return;
+            return response;
         }
 
-        this.body = {
+        response.body = {
             status: 'success',
             data: productData
         };
+        return response;
     },
-    updateOneproduct: function*(next) {
+   
+    addOneProduct: function (request) {
 
-        const schema = {
-            name: {type: 'string'},
-            brand: {type: 'string'},
-            price: {type: 'integer'},
+        let response = {
+            status: 200
+        };
+
+        const schemaToPut = {
+            id: {type: 'number', required: true},
+            name: {type: 'string', required: true},
+            brand: {type: 'string', required: true},
+            price: {type: 'number', required: true},
             options: {
                 type :'object',
                 properties: {
-                    color: {type: 'string'},
-                    size: {type: 'string'}
+                    color: {type: 'string', required: true},
+                    size: {type: 'string', required: false}
                 }
             }
         };
 
-        let validationResult = yield validator.validate(this.request.body, schema);
+        let validationResult = validator.validate(request.body, schemaToPut);
 
         if (!validationResult.isValid){
-            this.status = 400;
-            this.body = {
+            response.status = 400;
+            response.body = {
                 status: 'fail',
                 data: {
                     error: validationResult.errorMessage
                 }
             };
-            return;
+            return response;
         }
 
-
-
-
-        let productData = yield productServer.findOne(this.params.id);
-
-        if (!productData) {
-            this.status = 404;
-            this.body = {
-                status: 'fail',
-                data: {
-                    error: 'product ot found'
-                }
-            };
-            return;
-        }
-
-        _.merge(productData, this.request.body);
-
-        this.body = {
-            status:'success',
-            data: productData
-        };
-
-        yield next;
-    },
-    addOneproduct: function*(next) {
-
-        const schemaToPut = {
-            name: {type: 'string', required: true},
-            details: {
-                type :'object',
-                properties: {
-                    url: {type: 'string', required: true},
-                    description: {type: 'string', required: false}
-                }
-            }
-        };
-
-        let validationResult = yield validator.validate(this.request.body, schemaToPut);
-
-        if (!validationResult.isValid){
-            this.status = 400;
-            this.body = {
-                status: 'fail',
-                data: {
-                    error: validationResult.errorMessage
-                }
-            };
-            return;
-        }
-
-        let productData = yield productServer.findOne(this.params.id, this.request.body);
+        let productData = productServer.findOne(request.body.id, request.body);
 
         if (productData) {
-            this.status = 400;
-            this.body = {
+            response.status = 400;
+            response.body = {
                 status: 'fail',
                 data: {
                     error: 'product already exist'
                 }
             };
-            return;
+            return response;
         }
 
-        let newproductData = yield productServer.putOne(this.params.id, this.request.body);
+        let newproductData = productServer.putOne(request.body.id, request.body);
 
-        this.body = {
+        response.body = {
             status:'success',
             data: newproductData
         };
 
-        yield next;
+        return response;
     },
-    deleteOneproduct: function*() {
-        let productData = yield productServer.findOne(this.params.id);
-
-        if (!productData) {
-            this.status = 404;
-            this.body = {
-                status: 'fail',
-                data: {
-                    error: 'product not found'
-                }
-            };
-            return;
-        }
-
-        let deletedId = yield productServer.deleteOne(this.params.id);
-
-        this.body = {
-            status: 'success',
-            data: deletedId
-        };
-    }
 };

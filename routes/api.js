@@ -1,4 +1,5 @@
 const type = process.env.TYPE || 'json';
+console.log(type);
 
 const requestHandler = {
     plain: require('../http-servers/plain-text-server'),
@@ -8,35 +9,50 @@ const requestHandler = {
 
 var express = require('express');
 var router = express.Router();
+var bodyParser = require('body-parser');
 
 let aProducts = require('../controllers/allProducts');
 let sProduct = require('../controllers/singleProduct');
 
 router.post('/test', function (req, res, next) {
     requestHandler[type](req, res);
-    console.log('Time:', Date.now())
+    console.log('Time:', Date.now());
     next()
 });
 
 //Return ALL products
 router.get('/api/products', function (req, res, next) {
-    aProducts.getAllProducts();
-    console.log('Time:', Date.now())
+    let response  = aProducts.getAllProducts();
+    res.writeHead(response.status, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(response.body));
+    console.log('Time:', Date.now());
     next()
 });
 //Return SINGLE product
 router.get('/api/products/:id', function (req, res, next) {
-    console.log('Time:', Date.now())
+    let response  = sProduct.getOneProduct(req.params.id);
+    res.writeHead(response.status, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(response.body));
+    console.log('Time:', Date.now());
     next()
 });
 //Return ALL reviews for a single product
 router.get('/api/products/:id/reviews', function (req, res, next) {
-    console.log('Time:', Date.now())
+    console.log('Time:', Date.now());
     next()
 });
 //Add NEW product and return it
-router.post('/api/products', function (req, res, next) {
-    console.log('Time:', Date.now())
+router.post('/api/products', bodyParser.json(), function (req, res, next) {
+    let response  = sProduct.addOneProduct(req);
+    res.writeHead(response.status, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(response.body));
+    console.log('Time:', Date.now());
     next()
 });
 //Return ALL users

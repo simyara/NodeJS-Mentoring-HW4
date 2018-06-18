@@ -109,15 +109,15 @@ module.exports = {
     getItemsList() {
         return prodItems;
     },
-    *findOne(id) {
-        return prodItems.find((x) => x.id === id);
+    findOne(id) {
+        return prodItems.find((x) => x.id === parseInt(id));
     },
-    *putOne(id, item) {
+    putOne(id, item) {
         let newItem = _.merge({id: id}, item);
         prodItems.push(newItem);
         return newItem;
     },
-    *deleteOne(id){
+    deleteOne(id){
         prodItems = prodItems.filter((item) => item.id !== id);
         return id;
     }
