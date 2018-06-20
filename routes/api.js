@@ -20,12 +20,22 @@ router.post('/test', function (req, res, next) {
     next()
 });
 
-const cookieParcer = require('../middlewares/cookieParser').cookieParcer;
+const cookieParcer = require('../middlewares/cookieParser');
 router.post('/parceCookie', cookieParcer, function (req, res, next) {
     res.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8'
     });
     res.end(JSON.stringify(req.parsedCookies));
+    console.log('Time:', Date.now());
+    next()
+});
+
+const queryParser = require('../middlewares/queryParser');
+router.post('/queryParser', queryParser, function (req, res, next) {
+    res.writeHead(200, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(req.parsedQuery));
     console.log('Time:', Date.now());
     next()
 });

@@ -1,5 +1,4 @@
-module.exports = {
-    cookieParcer: function (req, res, next) {
+module.exports = function (req, res, next) {
         req.requestTime = Date.now();
         let cookieString = req.headers.cookie;
         let parsedCookies = {};
@@ -9,8 +8,6 @@ module.exports = {
                 parsedCookies[parts[0]] = parts[1];
             }
         });
-        console.log(parsedCookies);
         req.parsedCookies = parsedCookies;
         return next();
-    }
-};
+    };
