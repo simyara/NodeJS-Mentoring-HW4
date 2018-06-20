@@ -1,8 +1,6 @@
-"use strict";
+import userServer from '../models/userServer';
 
-let userServer = require('../models/userServer');
-
-module.exports = {
+export default {
     getAllUsers:  function () {
         return {
             status : 200,

@@ -1,4 +1,4 @@
-var fs = require('fs');
+import fs from 'fs';
 
 const requestHandler = (request, response) => {
     var filename = __dirname+'/../index.html';
@@ -10,4 +10,4 @@ const requestHandler = (request, response) => {
 
 };
 
-module.exports = requestHandler;
+export default requestHandler;

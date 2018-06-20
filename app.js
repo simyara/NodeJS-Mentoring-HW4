@@ -1,9 +1,8 @@
-var express = require('express');
+import express from 'express';
 var app = express();
 
-
-let router = require('./routes/api');
+import router from './routes/api';
 
 app.use('/', router)
 
-module.exports = app;
+export default app;

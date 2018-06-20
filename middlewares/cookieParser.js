@@ -1,4 +1,4 @@
-module.exports = function (req, res, next) {
+export function cookieParcer(req, res, next) {
         req.requestTime = Date.now();
         let cookieString = req.headers.cookie;
         let parsedCookies = {};

@@ -1,4 +1,4 @@
-module.exports = function (req, res, next) {
+export function queryParser(req, res, next) {
     req.requestTime = Date.now();
      let urlString = req.url;
      let urlArray = urlString.split('?');

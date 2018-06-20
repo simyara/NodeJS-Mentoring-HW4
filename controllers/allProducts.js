@@ -1,8 +1,6 @@
-"use strict";
+import productServer from '../models/productServer';
 
-let productServer = require('../models/productServer');
-
-module.exports = {
+export default {
     getAllProducts:  function () {
         return {
             status : 200,

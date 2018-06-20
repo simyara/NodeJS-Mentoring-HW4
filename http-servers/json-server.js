@@ -16,4 +16,4 @@ const product = {
         { size: 'XL' }
     ]
 };
-module.exports = requestHandler;
+export default requestHandler;

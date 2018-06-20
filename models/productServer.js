@@ -1,6 +1,4 @@
-"use strict";
-
-let _ = require('lodash');
+import  _ from 'lodash';
 
 let prodItems = [
     {
@@ -105,7 +103,7 @@ let prodItems = [
     },
 ];
 
-module.exports = {
+export default {
     getItemsList() {
         return prodItems;
     },

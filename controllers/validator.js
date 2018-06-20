@@ -1,6 +1,4 @@
-"use strict";
-
-let _ = require('lodash');
+import _ from 'lodash';
 
 function validateObject(obj, schema) {
 
@@ -50,6 +48,6 @@ function validateObject(obj, schema) {
 
 }
 
-module.exports = {
+export default {
     validate: validateObject
 };

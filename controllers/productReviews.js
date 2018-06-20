@@ -1,11 +1,6 @@
-"use strict";
+import reviewServer from '../models/reviewServer';
 
-let productServer = require('../models/productServer');
-let userServer = require('../models/userServer');
-let reviewServer = require('../models/reviewServer');
-let _ = require('lodash');
-
-module.exports = {
+export default {
     getAllReviews: function (productId) {
         let productData = reviewServer.getAllForProductId(productId);
         let response = {

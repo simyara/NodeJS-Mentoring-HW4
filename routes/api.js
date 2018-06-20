@@ -1,22 +1,26 @@
+import express from 'express';
 const type = process.env.TYPE || 'json';
 console.log(type);
+import plainTextServer from '../http-servers/plain-text-server';
+import jsonServer from '../http-servers/json-server';
+import htmlServer from '../http-servers/html-server';
+
 
 const requestHandler = {
-    plain: require('../http-servers/plain-text-server'),
-    json: require('../http-servers/json-server'),
-    html: require('../http-servers/html-server'),
+    plain: plainTextServer,
+    json: jsonServer,
+    html: htmlServer,
 }
 
-var express = require('express');
 var router = express.Router();
-var bodyParser = require('body-parser');
+import bodyParser from 'body-parser';
 
-let aProducts = require('../controllers/allProducts');
-let sProduct = require('../controllers/singleProduct');
+import aProducts from '../controllers/allProducts';
+import sProduct from '../controllers/singleProduct';
 
-let aUsers = require('../controllers/allUsers');
+import aUsers from '../controllers/allUsers';
 
-let pReviews = require('../controllers/productReviews');
+import pReviews from '../controllers/productReviews';
 
 router.post('/test', function (req, res, next) {
     requestHandler[type](req, res);
@@ -24,7 +28,8 @@ router.post('/test', function (req, res, next) {
     next()
 });
 
-const cookieParcer = require('../middlewares/cookieParser');
+import {cookieParcer} from '../middlewares/cookieParser';
+
 router.post('/parceCookie', cookieParcer, function (req, res, next) {
     res.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8'
@@ -34,7 +39,7 @@ router.post('/parceCookie', cookieParcer, function (req, res, next) {
     next()
 });
 
-const queryParser = require('../middlewares/queryParser');
+import {queryParser} from '../middlewares/queryParser';
 router.post('/queryParser', queryParser, function (req, res, next) {
     res.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8'
@@ -95,4 +100,4 @@ router.get('/api/users', function (req, res, next) {
     next()
 });
 
-module.exports = router;
+export default router;

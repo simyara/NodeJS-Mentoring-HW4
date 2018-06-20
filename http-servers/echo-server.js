@@ -1,4 +1,4 @@
-var http = require('http');
+import * as http from 'http'
 
 const server = http.createServer(function(req, res){
     console.log(req)

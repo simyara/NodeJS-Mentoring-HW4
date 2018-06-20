@@ -5,7 +5,7 @@ const requestHandler = (request, response) => {
     response.end();
 }
 
-module.exports = requestHandler;
+export default requestHandler;
 
 
 

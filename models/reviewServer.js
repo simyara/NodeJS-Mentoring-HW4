@@ -64,7 +64,7 @@ let reviewItems = [
 
 ];
 
-module.exports = {
+export default {
     getAllForProductId(productId) {
         return reviewItems.filter((x) => x.productId === parseInt(productId));
     }

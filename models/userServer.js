@@ -22,7 +22,7 @@ let userItems = [
 
 ];
 
-module.exports = {
+export default {
     getItemsList() {
         return userItems;
     }

@@ -1,10 +1,8 @@
-"use strict";
+import productServer from '../models/productServer';
+import _ from 'lodash';
+import validator from './validator';
 
-let productServer = require('../models/productServer');
-let _ = require('lodash');
-let validator = require('./validator');
-
-module.exports = {
+export default {
     getOneProduct: function (id) {
         let productData = productServer.findOne(id);
         let response = {
