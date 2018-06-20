@@ -20,6 +20,16 @@ router.post('/test', function (req, res, next) {
     next()
 });
 
+const cookieParcer = require('../middlewares/cookieParser').cookieParcer;
+router.post('/parceCookie', cookieParcer, function (req, res, next) {
+    res.writeHead(200, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(req.parsedCookies));
+    console.log('Time:', Date.now());
+    next()
+});
+
 //Return ALL products
 router.get('/api/products', function (req, res, next) {
     let response  = aProducts.getAllProducts();

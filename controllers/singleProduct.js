@@ -28,7 +28,7 @@ module.exports = {
         };
         return response;
     },
-   
+
     addOneProduct: function (request) {
 
         let response = {
