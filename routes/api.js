@@ -14,6 +14,10 @@ var bodyParser = require('body-parser');
 let aProducts = require('../controllers/allProducts');
 let sProduct = require('../controllers/singleProduct');
 
+let aUsers = require('../controllers/allUsers');
+
+let pReviews = require('../controllers/productReviews');
+
 router.post('/test', function (req, res, next) {
     requestHandler[type](req, res);
     console.log('Time:', Date.now());
@@ -62,6 +66,11 @@ router.get('/api/products/:id', function (req, res, next) {
 });
 //Return ALL reviews for a single product
 router.get('/api/products/:id/reviews', function (req, res, next) {
+    let response  = pReviews.getAllReviews(req.params.id);
+    res.writeHead(response.status, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(response.body));
     console.log('Time:', Date.now());
     next()
 });
@@ -77,7 +86,12 @@ router.post('/api/products', bodyParser.json(), function (req, res, next) {
 });
 //Return ALL users
 router.get('/api/users', function (req, res, next) {
-    console.log('Time:', Date.now())
+    let response  = aUsers.getAllUsers();
+    res.writeHead(response.status, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(response.body));
+    console.log('Time:', Date.now());
     next()
 });
 
