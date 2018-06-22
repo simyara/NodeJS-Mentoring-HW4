@@ -59,9 +59,6 @@ let reviewItems = [
         userId: 5,
         mark: 5
     },
-
-
-
 ];
 
 export default {
@@ -69,4 +66,3 @@ export default {
         return reviewItems.filter((x) => x.productId === parseInt(productId));
     }
 };
-

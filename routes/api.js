@@ -1,11 +1,9 @@
 import express from 'express';
-const type = process.env.TYPE || 'json';
-console.log(type);
 import plainTextServer from '../http-servers/plain-text-server';
 import jsonServer from '../http-servers/json-server';
 import htmlServer from '../http-servers/html-server';
 
-
+const type = process.env.TYPE || 'json';
 const requestHandler = {
     plain: plainTextServer,
     json: jsonServer,
@@ -22,15 +20,17 @@ import aUsers from '../controllers/allUsers';
 
 import pReviews from '../controllers/productReviews';
 
-router.post('/test', function (req, res, next) {
+router.post('/test', function(req, res, next) {
     requestHandler[type](req, res);
     console.log('Time:', Date.now());
     next()
 });
 
-import {cookieParcer} from '../middlewares/cookieParser';
+import {
+    cookieParser
+} from '../middlewares/cookieParser';
 
-router.post('/parceCookie', cookieParcer, function (req, res, next) {
+router.post('/parseCookie', cookieParser, function(req, res, next) {
     res.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -39,8 +39,10 @@ router.post('/parceCookie', cookieParcer, function (req, res, next) {
     next()
 });
 
-import {queryParser} from '../middlewares/queryParser';
-router.post('/queryParser', queryParser, function (req, res, next) {
+import {
+    queryParser
+} from '../middlewares/queryParser';
+router.post('/queryParser', queryParser, function(req, res, next) {
     res.writeHead(200, {
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -50,8 +52,8 @@ router.post('/queryParser', queryParser, function (req, res, next) {
 });
 
 //Return ALL products
-router.get('/api/products', function (req, res, next) {
-    let response  = aProducts.getAllProducts();
+router.get('/api/products', function(req, res, next) {
+    let response = aProducts.getAllProducts();
     res.writeHead(response.status, {
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -60,8 +62,8 @@ router.get('/api/products', function (req, res, next) {
     next()
 });
 //Return SINGLE product
-router.get('/api/products/:id', function (req, res, next) {
-    let response  = sProduct.getOneProduct(req.params.id);
+router.get('/api/products/:id', function(req, res, next) {
+    let response = sProduct.getOneProduct(req.params.id);
     res.writeHead(response.status, {
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -70,8 +72,8 @@ router.get('/api/products/:id', function (req, res, next) {
     next()
 });
 //Return ALL reviews for a single product
-router.get('/api/products/:id/reviews', function (req, res, next) {
-    let response  = pReviews.getAllReviews(req.params.id);
+router.get('/api/products/:id/reviews', function(req, res, next) {
+    let response = pReviews.getAllReviews(req.params.id);
     res.writeHead(response.status, {
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -80,8 +82,8 @@ router.get('/api/products/:id/reviews', function (req, res, next) {
     next()
 });
 //Add NEW product and return it
-router.post('/api/products', bodyParser.json(), function (req, res, next) {
-    let response  = sProduct.addOneProduct(req);
+router.post('/api/products', bodyParser.json(), function(req, res, next) {
+    let response = sProduct.addOneProduct(req);
     res.writeHead(response.status, {
         'Content-Type': 'application/json; charset=utf-8'
     });
@@ -90,8 +92,8 @@ router.post('/api/products', bodyParser.json(), function (req, res, next) {
     next()
 });
 //Return ALL users
-router.get('/api/users', function (req, res, next) {
-    let response  = aUsers.getAllUsers();
+router.get('/api/users', function(req, res, next) {
+    let response = aUsers.getAllUsers();
     res.writeHead(response.status, {
         'Content-Type': 'application/json; charset=utf-8'
     });

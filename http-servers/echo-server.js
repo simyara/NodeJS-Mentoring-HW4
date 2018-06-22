@@ -1,7 +1,6 @@
 import * as http from 'http'
 
-const server = http.createServer(function(req, res){
-    console.log(req)
+const server = http.createServer(function(req, res) {
     res.writeHead(200);
     req.pipe(res);
 

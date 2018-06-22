@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import  _  from 'lodash';
 
 function validateObject(obj, schema) {
 
@@ -11,27 +11,30 @@ function validateObject(obj, schema) {
         errorUnexpectedMessage = unexpected.join(', ') + ' is not defined for the object';
     }
 
-    let errorString = Object.keys(schema).map(function (key) {
+    let errorString = Object.keys(schema).map(function(key) {
 
         if (schema[key].required) {
             if (obj[key] === 'undefined') {
                 errorMessage = key + ' value is required';
+
                 return errorMessage;
             }
         }
 
         if ((typeof obj[key]) !== schema[key].type) {
             errorMessage = key + ' type mismatch';
+
             return errorMessage;
         }
 
         if (schema[key].type === 'object') {
             let res = validateObject(obj[key], schema[key].properties);
-            return res.errorMessage;  //(*) recursion
+
+            return res.errorMessage; //(*) recursion
         }
 
         return;
-    }).filter(function (x) {
+    }).filter(function(x) {
         return x;
     });
 

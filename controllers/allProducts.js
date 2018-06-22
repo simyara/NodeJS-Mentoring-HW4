@@ -1,15 +1,12 @@
 import productServer from '../models/productServer';
 
 export default {
-    getAllProducts:  function () {
+    getAllProducts: function () {
         return {
-            status : 200,
-            body : {
-                status:'success',
+            status: 200,
+            body: {
                 data: productServer.getItemsList()
             }
         }
     }
 };
-
-

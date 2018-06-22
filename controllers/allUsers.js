@@ -1,15 +1,12 @@
 import userServer from '../models/userServer';
 
 export default {
-    getAllUsers:  function () {
+    getAllUsers: function () {
         return {
-            status : 200,
-            body : {
-                status:'success',
+            status: 200,
+            body: {
                 data: userServer.getItemsList()
             }
         }
     }
 };
-
-
