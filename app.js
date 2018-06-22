@@ -1,7 +1,7 @@
 import express from 'express';
-var app = express();
-
 import router from './routes/api';
+
+let app = express();
 
 app.use('/', router)
 

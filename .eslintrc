@@ -2,7 +2,8 @@
   "parserOptions": {
     "ecmaVersion": 6,
     "impliedStrict": true,
-    "experimentalObjectRestSpread": true
+    "experimentalObjectRestSpread": true,
+    "sourceType": "module"
   },
   "env": {
     "node": true,
