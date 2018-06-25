@@ -1,13 +1,15 @@
 export function cookieParser(req, res, next) {
     req.requestTime = Date.now();
     let cookieString = req.headers.cookie;
-    let parsedCookies = {};
-    cookieString.trim().split(';').forEach((cookie) => {
-        let parts = cookie.trim().split('=');
-        if (parts.length > 1) {
-            parsedCookies[parts[0]] = parts[1];
-        }
-    });
+    let parsedCookies = cookieString.trim().split(';').reduce((previousValue, currentValue) => {
+        const [name, value] = currentValue.split('=');
+        previousValue[name] = value;
+        return previousValue
+    }, {});
     req.parsedCookies = parsedCookies;
+    res.writeHead(200, {
+        'Content-Type': 'application/json; charset=utf-8'
+    });
+    res.end(JSON.stringify(req.parsedCookies));
     return next();
 };

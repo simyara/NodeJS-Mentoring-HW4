@@ -1,14 +1,14 @@
-import  _  from 'lodash';
+import { difference } from 'lodash';
 
 function validateObject(obj, schema) {
 
-    let errorUnexpectedMessage;
+    let errorRedundantFieldsMessage;
     let errorMessage;
 
-    let unexpected = _.difference(Object.keys(obj), Object.keys(schema));
+    let redundantFields = difference(Object.keys(obj), Object.keys(schema));
 
-    if (unexpected.length > 0) {
-        errorUnexpectedMessage = unexpected.join(', ') + ' is not defined for the object';
+    if (redundantFields.length > 0) {
+        errorRedundantFieldsMessage = redundantFields.join(', ') + ' is not defined for the object';
     }
 
     let errorString = Object.keys(schema).map(function(key) {
@@ -38,8 +38,8 @@ function validateObject(obj, schema) {
         return x;
     });
 
-    if (errorUnexpectedMessage) {
-        errorString.unshift(errorUnexpectedMessage);
+    if (errorRedundantFieldsMessage) {
+        errorString.unshift(errorRedundantFieldsMessage);
     }
 
     let resObj = {

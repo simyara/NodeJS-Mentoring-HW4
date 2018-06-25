@@ -1,4 +1,4 @@
-import app from './app';
+import app from './routes/api';
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
