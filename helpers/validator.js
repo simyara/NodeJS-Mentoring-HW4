@@ -1,6 +1,6 @@
 import { difference } from 'lodash';
 
-function validateObject(obj, schema) {
+export function validate(obj, schema) {
 
     let errorRedundantFieldsMessage;
     let errorMessage;
@@ -11,31 +11,27 @@ function validateObject(obj, schema) {
         errorRedundantFieldsMessage = redundantFields.join(', ') + ' is not defined for the object';
     }
 
-    let errorString = Object.keys(schema).map(function(key) {
+    let errorString = Object.keys(schema).map((key) => {
 
         if (schema[key].required) {
             if (obj[key] === 'undefined') {
-                errorMessage = key + ' value is required';
+                errorMessage = `${key} value is required`;
 
                 return errorMessage;
             }
         }
 
         if ((typeof obj[key]) !== schema[key].type) {
-            errorMessage = key + ' type mismatch';
+            errorMessage = `${key} type mismatch`;
 
             return errorMessage;
         }
 
         if (schema[key].type === 'object') {
-            let res = validateObject(obj[key], schema[key].properties);
+            let res = validate(obj[key], schema[key].properties);
 
-            return res.errorMessage; //(*) recursion
+            return res.errorMessage;
         }
-
-        return;
-    }).filter(function(x) {
-        return x;
     });
 
     if (errorRedundantFieldsMessage) {
@@ -50,7 +46,3 @@ function validateObject(obj, schema) {
     return resObj;
 
 }
-
-export default {
-    validate: validateObject
-};

@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import util from 'util';
-import validator from "../helpers/validator";
-import {merge} from "lodash";
+import {validate} from '../helpers/validator';
+import {merge} from 'lodash';
 const filePath = path.join(__dirname, '../mock/products.json');
 const readFile = util.promisify(fs.readFile);
 
@@ -39,7 +39,7 @@ const schema = {
 };
 
 export function getAllProducts(req, res, next) {
-    readFile(filePath).then(file => {
+    readFile(filePath).then( (file) => {
         let data = file.toString();
         res.writeHead(200, {
             'Content-Type': 'application/json; charset=utf-8'
@@ -52,7 +52,7 @@ export function getAllProducts(req, res, next) {
 
 export function getProductById(req, res, next) {
     let id = req.params.id;
-    readFile(filePath).then(file => {
+    readFile(filePath).then((file) => {
         let data = file.toString();
         let prodItems = JSON.parse(data);
         let productData = prodItems.find((x) => x.id === parseInt(id));
@@ -75,7 +75,7 @@ export function getProductById(req, res, next) {
 
 export function addNewProduct(req, res, next) {
 
-    let validationResult = validator.validate(req.body, schema);
+    let validationResult = validate(req.body, schema);
 
     if (!validationResult.isValid) {
         res.writeHead(400, {
@@ -88,7 +88,7 @@ export function addNewProduct(req, res, next) {
 
     let id = req.body.id;
 
-    readFile(filePath).then(file => {
+    readFile(filePath).then( (file) => {
         let data = file.toString();
         let prodItems = JSON.parse(data);
         let productData = prodItems.find((x) => x.id === parseInt(id));
@@ -99,9 +99,7 @@ export function addNewProduct(req, res, next) {
             res.end(JSON.stringify({error: 'product already exist'}));
         }
 
-        let newProductData = merge({
-            id: id
-        }, req.body);
+        let newProductData = merge({id: id}, req.body);
 
         fs.appendFileSync(filePath, JSON.stringify(newProductData));
         res.writeHead(200, {
