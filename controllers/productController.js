@@ -46,7 +46,6 @@ export function getAllProducts(req, res, next) {
         });
         res.end(data);
         console.log('Time:', Date.now());
-        next();
     })
 }
 
@@ -68,7 +67,6 @@ export function getProductById(req, res, next) {
             });
             res.end(JSON.stringify(productData));
             console.log('Time:', Date.now());
-            next();
         }
     })
 }
@@ -83,7 +81,6 @@ export function addNewProduct(req, res, next) {
         });
         res.end(JSON.stringify({error: validationResult.errorMessage}));
         console.log('Time:', Date.now());
-        next();
     }
 
     let id = req.body.id;
@@ -108,7 +105,6 @@ export function addNewProduct(req, res, next) {
         res.end(JSON.stringify(newProductData));
 
         console.log('Time:', Date.now());
-        next();
     })
 }
 

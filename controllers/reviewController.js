@@ -22,7 +22,6 @@ export function getProductReviews(req, res, next) {
             });
             res.end(JSON.stringify(productData));
             console.log('Time:', Date.now());
-            next();
         }
     })
 }

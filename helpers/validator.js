@@ -16,14 +16,12 @@ export function validate(obj, schema) {
         if (schema[key].required) {
             if (obj[key] === 'undefined') {
                 errorMessage = `${key} value is required`;
-
                 return errorMessage;
             }
         }
 
         if ((typeof obj[key]) !== schema[key].type) {
             errorMessage = `${key} type mismatch`;
-
             return errorMessage;
         }
 
@@ -32,6 +30,8 @@ export function validate(obj, schema) {
 
             return res.errorMessage;
         }
+    }).filter(function (x) {
+        return x;
     });
 
     if (errorRedundantFieldsMessage) {
@@ -42,6 +42,8 @@ export function validate(obj, schema) {
         isValid: errorString.length <= 0,
         errorMessage: errorString.join('; ')
     };
+
+    console.log(resObj);
 
     return resObj;
 
