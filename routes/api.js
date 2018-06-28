@@ -13,7 +13,9 @@ import {verifyJWTToken} from '../middlewares/verifyJWTToken ';
 
 import passport from 'passport';
 import passportLocal from 'passport-local';
-import passportFacebook from 'passport-facebook'';
+import passportFacebook from 'passport-facebook';
+import passportTwitter from 'passport-twitter';
+import passportGoogle from 'passport-google-oauth';
 
 
 const credentials = {
@@ -22,29 +24,48 @@ const credentials = {
 };
 let LocalStrategy = passportLocal.Strategy;
 let FacebookStrategy = passportFacebook.Strategy;
+let TwitterStrategy = passportTwitter.Strategy;
+let GoogleStrategy  = passportGoogle.OAuthStrategy;
 
 passport.use(new LocalStrategy({
         usernameField: 'name',
-        passwordField: 'password'
+        passwordField: 'password',
     },
     function(username, password, done) {
-        if (username !== credentials.name || password != credentials.password) {
-        return done(null, false, 'Bad username/password combination')
+        if (username !== credentials.name || password !== credentials.password) {
+            return done(null, false, {message: 'Bad username/password combination'});
         } else {
-            return done(null, user)
+            return done(null, credentials);
         }
 }));
 
 passport.use(new FacebookStrategy({
-        clientID: FACEBOOK_APP_ID,
-        clientSecret: FACEBOOK_APP_SECRET,
-        callbackURL: "http://www.example.com/auth/facebook/callback"
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        callbackURL: 'http://localhost:3000/auth/facebook/callback'
     },
     function(accessToken, refreshToken, profile, done) {
-        User.findOrCreate(..., function(err, user) {
-            if (err) { return done(err); }
-            done(null, user);
-        });
+        return done(null, profile);
+    }
+));
+
+passport.use(new TwitterStrategy({
+        consumerKey: process.env.TWITTER_KEY,
+        consumerSecret: process.env.TWITTER_SECRET,
+        callbackURL: "http://localhost:3000/auth/twitter/callback"
+    },
+    function(token, tokenSecret, profile, done) {
+        done(null, user);
+    }
+));
+
+passport.use(new GoogleStrategy({
+        consumerKey: process.env.GOOGLE_KEY,
+        consumerSecret: process.env.GOOGLE_SECRET,
+        callbackURL: "http://localhost:3000/auth/google/callback"
+    },
+    function(token, tokenSecret, profile, done) {
+        done(null, user);
     }
 ));
 
@@ -57,7 +78,31 @@ const requestHandler = {
 
 let router = express.Router();
 
-router.get('/auth',authentication)
+router.get('/auth', authentication);
+
+router.post('/auth/local', passport.authenticate('local'), function(req, res, next) {
+    res.status(200).send(`Hello ${user.username}!`)
+    next();
+});
+
+router.get('/auth/facebook', passport.authenticate('facebook'));
+router.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
+    function(req, res) {
+        res.redirect('/');
+    });
+
+router.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter/callback',
+    passport.authenticate('twitter', { successRedirect: '/',
+        failureRedirect: '/auth/twitter' }));
+
+router.get('/auth/google', passport.authenticate('google'));
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/auth/google' }),
+    function(req, res) {
+        res.redirect('/');
+    });
 
 router.post('/test', function(req, res, next) {
     requestHandler[type](req, res);
@@ -81,6 +126,8 @@ router.post('/api/products', verifyJWTToken, bodyParser.json(), productControlle
 router.get('/api/users', verifyJWTToken, userController.getAllUsers);
 
 let app = express();
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/', router);
 
 export default app;
