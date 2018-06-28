@@ -13,6 +13,16 @@ export function getAllUsers(req, res, next) {
         });
         res.end(data);
         console.log('Time:', Date.now());
-        next();
+    })
+};
+
+export function getUserByName(name) {
+    readFile(filePath).then((file) => {
+        let data = file.toString();
+        let userItems = JSON.parse(data);
+        console.log(name);
+        let userData = userItems.find((x) => x.name === name);
+        console.log(JSON.stringify(userData));
+        return userData;
     })
 }

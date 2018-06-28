@@ -1,1 +1,5 @@
-[{"id":1,"name":"UserName1"},{"id":2,"name":"UserName2"},{"id":3,"name":"UserName3"},{"id":4,"name":"UserName4"},{"id":5,"name":"UserName5"}]
+[{"id":1,"name":"UserName1", "password":"psw1"},
+  {"id":2,"name":"UserName2", "password":"psw2"},
+  {"id":3,"name":"UserName3", "password":"psw3"},
+  {"id":4,"name":"UserName4", "password":"psw4"},
+  {"id":5,"name":"UserName5", "password":"psw5"}]
